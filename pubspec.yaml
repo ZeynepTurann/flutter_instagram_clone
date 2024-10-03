@@ -1,0 +1,45 @@
+name: flutter_instagram_clone
+description: A Very Good Project created by Very Good CLI.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.4.0
+
+dependencies:
+  api_repository:
+    path: packages/api_repository
+  app_ui:
+    path: packages/app_ui
+  bloc: ^8.1.4
+  env:
+    path: packages/env
+
+  equatable: ^2.0.5
+  firebase_core: ^2.24.2
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.6
+
+  flutter_gen: any
+  flutter_localizations:
+    sdk: flutter
+  form_fields:
+    path: packages/form_fields
+  get_it: ^7.7.0
+  google_sign_in: ^6.2.1
+  intl: ^0.19.0
+  powersync_repository:
+    path: packages/powersync_repository
+  shared:
+    path: packages/shared
+dev_dependencies:
+  bloc_test: ^9.1.7
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true

@@ -1,7 +1,8 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_instagram_clone/auth/view/auth_page.dart';
 import 'package:flutter_instagram_clone/l10n/l10n.dart';
-import 'package:flutter_instagram_clone/login/view/login_page.dart';
+import 'package:flutter_instagram_clone/auth/login/view/login_page.dart';
 
 class AppView extends StatelessWidget {
   const AppView({super.key});
@@ -15,6 +16,6 @@ class AppView extends StatelessWidget {
         darkTheme: const AppDarkTheme().theme,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const LoginPage());
+        home: const AuthPage());
   }
 }

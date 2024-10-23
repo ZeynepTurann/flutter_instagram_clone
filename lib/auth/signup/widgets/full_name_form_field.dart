@@ -7,14 +7,14 @@ import 'package:flutter_instagram_clone/l10n/l10n.dart';
 
 import 'package:shared/shared.dart';
 
-class EmailFormField extends StatefulWidget {
-  const EmailFormField({super.key});
+class FullNameFormField extends StatefulWidget {
+  const FullNameFormField({super.key});
 
   @override
-  State<EmailFormField> createState() => _EmailFormFieldState();
+  State<FullNameFormField> createState() => _FullNameFormFieldState();
 }
 
-class _EmailFormFieldState extends State<EmailFormField> {
+class _FullNameFormFieldState extends State<FullNameFormField> {
   late Debouncer _debouncer;
   late FocusNode _focusNode;
 
@@ -28,7 +28,7 @@ class _EmailFormFieldState extends State<EmailFormField> {
 
   void _focusNodeListener() {
     if (!_focusNode.hasFocus) {
-      context.read<SignUpCubit>().onEmailUnfocused();
+      context.read<SignUpCubit>().onFullNameUnfocused();
     }
   }
 
@@ -46,20 +46,20 @@ class _EmailFormFieldState extends State<EmailFormField> {
     final isLoading = context
         .select((SignUpCubit cubit) => cubit.state.submissionStatus.isLoading);
 
-    final emailError =
-        context.select((SignUpCubit cubit) => cubit.state.email.errorMessage);
+    final fullNameError = context
+        .select((SignUpCubit cubit) => cubit.state.fullName.errorMessage);
 
     return AppTextField(
         filled: true,
-        errorText: emailError,
+        errorText: fullNameError,
         enabled: !isLoading,
         focusNode: _focusNode,
-        hintText: context.l10n.emailText,
-        autofillHints: const [AutofillHints.email],
-        textInputType: TextInputType.emailAddress,
+        hintText: context.l10n.nameText,
+        autofillHints: const [AutofillHints.givenName],
+        textCapitalization: TextCapitalization.words,
         textInputAction: TextInputAction.next,
         onChanged: (value) => _debouncer.run(() {
-              context.read<SignUpCubit>().onEmailChanged(value);
+              context.read<SignUpCubit>().onFullNameChanged(value);
             }));
   }
 }

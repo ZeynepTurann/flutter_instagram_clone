@@ -1,26 +1,29 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_instagram_clone/auth/signup/sign_up.dart';
 
 import 'package:flutter_instagram_clone/l10n/l10n.dart';
 
 import 'package:shared/shared.dart';
 
-class EmailFormField extends StatefulWidget {
-  const EmailFormField({super.key});
+import '../cubit/forgot_password_cubit.dart';
+
+class ForgotPasswordEmailFormField extends StatefulWidget {
+  const ForgotPasswordEmailFormField({super.key});
 
   @override
-  State<EmailFormField> createState() => _EmailFormFieldState();
+  State<ForgotPasswordEmailFormField> createState() => _ForgotPasswordEmailFormFieldState();
 }
 
-class _EmailFormFieldState extends State<EmailFormField> {
+class _ForgotPasswordEmailFormFieldState extends State<ForgotPasswordEmailFormField> {
   late Debouncer _debouncer;
+
   late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
+
     _focusNode = FocusNode()
       ..addListener(_focusNodeListener); // _focusNode.addListener()
     _debouncer = Debouncer();
@@ -28,7 +31,7 @@ class _EmailFormFieldState extends State<EmailFormField> {
 
   void _focusNodeListener() {
     if (!_focusNode.hasFocus) {
-      context.read<SignUpCubit>().onEmailUnfocused();
+      // context.read<ForgotPasswordCubit>().onEmailUnfocused();
     }
   }
 
@@ -43,23 +46,19 @@ class _EmailFormFieldState extends State<EmailFormField> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = context
-        .select((SignUpCubit cubit) => cubit.state.submissionStatus.isLoading);
-
-    final emailError =
-        context.select((SignUpCubit cubit) => cubit.state.email.errorMessage);
+    // var emailError =
+        // context.select((ForgotPasswordCubit cubit) => cubit.state.email.errorMessage);
 
     return AppTextField(
         filled: true,
-        errorText: emailError,
-        enabled: !isLoading,
+        // errorText: emailError,
+
         focusNode: _focusNode,
         hintText: context.l10n.emailText,
-        autofillHints: const [AutofillHints.email],
         textInputType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         onChanged: (value) => _debouncer.run(() {
-              context.read<SignUpCubit>().onEmailChanged(value);
+              // context.read<ForgotPasswordCubit>().onEmailChanged(value);
             }));
   }
 }

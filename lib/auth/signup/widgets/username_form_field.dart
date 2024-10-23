@@ -7,14 +7,14 @@ import 'package:flutter_instagram_clone/l10n/l10n.dart';
 
 import 'package:shared/shared.dart';
 
-class EmailFormField extends StatefulWidget {
-  const EmailFormField({super.key});
+class UsernameFormField extends StatefulWidget {
+  const UsernameFormField({super.key});
 
   @override
-  State<EmailFormField> createState() => _EmailFormFieldState();
+  State<UsernameFormField> createState() => _UsernameFormFieldState();
 }
 
-class _EmailFormFieldState extends State<EmailFormField> {
+class _UsernameFormFieldState extends State<UsernameFormField> {
   late Debouncer _debouncer;
   late FocusNode _focusNode;
 
@@ -28,7 +28,7 @@ class _EmailFormFieldState extends State<EmailFormField> {
 
   void _focusNodeListener() {
     if (!_focusNode.hasFocus) {
-      context.read<SignUpCubit>().onEmailUnfocused();
+      context.read<SignUpCubit>().onUsernameUnfocused();
     }
   }
 
@@ -46,20 +46,20 @@ class _EmailFormFieldState extends State<EmailFormField> {
     final isLoading = context
         .select((SignUpCubit cubit) => cubit.state.submissionStatus.isLoading);
 
-    final emailError =
-        context.select((SignUpCubit cubit) => cubit.state.email.errorMessage);
+    final usernameError = context
+        .select((SignUpCubit cubit) => cubit.state.username.errorMessage);
 
     return AppTextField(
         filled: true,
-        errorText: emailError,
+        errorText: usernameError,
+        errorMaxLines: 3,
         enabled: !isLoading,
         focusNode: _focusNode,
-        hintText: context.l10n.emailText,
-        autofillHints: const [AutofillHints.email],
-        textInputType: TextInputType.emailAddress,
+        hintText: context.l10n.usernameText,
+        autofillHints: const [AutofillHints.name],
         textInputAction: TextInputAction.next,
         onChanged: (value) => _debouncer.run(() {
-              context.read<SignUpCubit>().onEmailChanged(value);
+              context.read<SignUpCubit>().onUsernameChanged(value);
             }));
   }
 }

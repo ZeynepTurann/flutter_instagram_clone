@@ -2,8 +2,6 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram_clone/auth/login/cubit/login_cubit.dart';
-import 'package:flutter_instagram_clone/auth/login/widgets/auth_provider_sign_in_button.dart';
-import 'package:flutter_instagram_clone/auth/login/widgets/login_form.dart';
 import 'package:flutter_instagram_clone/auth/login/widgets/widgets.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -41,7 +39,7 @@ class LoginView extends StatelessWidget {
             ),
 
             Expanded(
-              child: Column(
+                child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Login form
@@ -78,7 +76,12 @@ class LoginView extends StatelessWidget {
               ],
             )),
 
-            const SignUpNewAccountButton()
+            const SignUpNewAccountButton(),
+            ElevatedButton(
+                onPressed: () {
+                  context.read<UserRepository>().logOut();
+                },
+                child: const Text("Log Out"))
           ],
         ),
       ),

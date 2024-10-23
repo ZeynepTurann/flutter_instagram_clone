@@ -34,7 +34,7 @@ class SupabaseAuthenticationClient implements AuthenticationClient {
       final supabaseUser = state.session?.user;
       return supabaseUser == null
           ? AuthenticationUser.anonymous
-          : supabaseUser.toUser;
+          : supabaseUser.toUser; //extension cretae Authentication user
     });
   }
 

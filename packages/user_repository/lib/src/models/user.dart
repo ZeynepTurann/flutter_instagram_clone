@@ -1,5 +1,4 @@
 import 'package:authentication_client/authentication_client.dart';
-import 'package:shared/shared.dart';
 
 /// {@template user}
 /// User model represents the current user.
@@ -17,6 +16,7 @@ class User extends AuthenticationUser {
   });
 
   /// Converts an [AuthenticationUser] instance to [User].
+  /// Authentication user => User
   factory User.fromAuthenticationUser({
     required AuthenticationUser authenticationUser,
   }) =>

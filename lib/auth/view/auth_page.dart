@@ -1,5 +1,4 @@
 import 'package:animations/animations.dart';
-import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram_clone/auth/cubit/auth_cubit.dart';

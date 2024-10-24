@@ -12,10 +12,12 @@ class ForgotPasswordEmailFormField extends StatefulWidget {
   const ForgotPasswordEmailFormField({super.key});
 
   @override
-  State<ForgotPasswordEmailFormField> createState() => _ForgotPasswordEmailFormFieldState();
+  State<ForgotPasswordEmailFormField> createState() =>
+      _ForgotPasswordEmailFormFieldState();
 }
 
-class _ForgotPasswordEmailFormFieldState extends State<ForgotPasswordEmailFormField> {
+class _ForgotPasswordEmailFormFieldState
+    extends State<ForgotPasswordEmailFormField> {
   late Debouncer _debouncer;
 
   late FocusNode _focusNode;
@@ -31,7 +33,7 @@ class _ForgotPasswordEmailFormFieldState extends State<ForgotPasswordEmailFormFi
 
   void _focusNodeListener() {
     if (!_focusNode.hasFocus) {
-      // context.read<ForgotPasswordCubit>().onEmailUnfocused();
+      context.read<ForgotPasswordCubit>().onEmailUnfocused();
     }
   }
 
@@ -46,19 +48,18 @@ class _ForgotPasswordEmailFormFieldState extends State<ForgotPasswordEmailFormFi
 
   @override
   Widget build(BuildContext context) {
-    // var emailError =
-        // context.select((ForgotPasswordCubit cubit) => cubit.state.email.errorMessage);
+    var emailError = context
+        .select((ForgotPasswordCubit cubit) => cubit.state.email.errorMessage);
 
     return AppTextField(
         filled: true,
-        // errorText: emailError,
-
+        errorText: emailError,
         focusNode: _focusNode,
         hintText: context.l10n.emailText,
         textInputType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         onChanged: (value) => _debouncer.run(() {
-              // context.read<ForgotPasswordCubit>().onEmailChanged(value);
+              context.read<ForgotPasswordCubit>().onEmailChanged(value);
             }));
   }
 }

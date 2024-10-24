@@ -2,10 +2,14 @@ import 'package:animations/animations.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_instagram_clone/auth/change_password/view/change_password_view.dart';
+import 'package:flutter_instagram_clone/auth/forgot_password/change_password/cubit/change_password_cubit.dart';
+import 'package:flutter_instagram_clone/auth/forgot_password/change_password/view/change_password_view.dart';
 import 'package:flutter_instagram_clone/auth/cubit/manage_password_cubit.dart';
-import 'package:flutter_instagram_clone/auth/signup/widgets/sign_up_button.dart';
+import 'package:flutter_instagram_clone/auth/forgot_password/cubit/forgot_password_cubit.dart';
+import 'package:flutter_instagram_clone/auth/forgot_password/widgets/forgot_password_form.dart';
+import 'package:flutter_instagram_clone/auth/forgot_password/widgets/forgot_password_send_email_button.dart';
 import 'package:flutter_instagram_clone/l10n/l10n.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ManageForgotPasswordPage extends StatelessWidget {
   const ManageForgotPasswordPage({super.key});
@@ -21,8 +25,20 @@ class ManageForgotPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ManagePasswordCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ManagePasswordCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ForgotPasswordCubit(
+              userRepository: context.read<UserRepository>()),
+        ),
+        BlocProvider(
+          create: (context) => ChangePasswordCubit(
+              userRepository: context.read<UserRepository>()),
+        )
+      ],
       child: const ForgotPasswordPage(),
     );
   }
@@ -74,7 +90,11 @@ class ForgotPasswordView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gap.v(AppSpacing.xxxlg * 3),
-              ForgotPasswordEmailConfirmationLabel()
+              ForgotPasswordEmailConfirmationLabel(),
+              Gap.v(AppSpacing.md),
+              ForgotPasswordForm(),
+              Gap.v(AppSpacing.md),
+              ForgotButtonSendEmailButton()
             ],
           )),
     );

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:form_fields/form_fields.dart';
 import 'package:powersync_repository/powersync_repository.dart';
 import 'package:shared/shared.dart';
+import 'package:supabase_authentication_client/supabase_authentication_client.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'forgot_password_state.dart';
@@ -86,7 +87,8 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   void _errorFormatter(Object error, StackTrace stackTrace) {
     addError(error, stackTrace);
     final status = switch (error) {
-      AuthException(:final statusCode) => switch (statusCode?.parse) {
+      SendPasswordResetEmailFailure(:final AuthException error) => switch (
+            error.statusCode?.parse) {
           HttpStatus.tooManyRequests => ForgotPasswordStatus.tooManyRequests,
           _ => ForgotPasswordStatus.failure,
         },

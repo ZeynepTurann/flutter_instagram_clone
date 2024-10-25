@@ -6,14 +6,14 @@ import 'package:flutter_instagram_clone/l10n/l10n.dart';
 import 'package:flutter_instagram_clone/auth/login/cubit/login_cubit.dart';
 import 'package:shared/shared.dart';
 
-class EmailFormField extends StatefulWidget {
-  const EmailFormField({super.key});
+class EmailFormFieldLogIn extends StatefulWidget {
+  const EmailFormFieldLogIn({super.key});
 
   @override
-  State<EmailFormField> createState() => _EmailFormFieldState();
+  State<EmailFormFieldLogIn> createState() => _EmailFormFieldLogInState();
 }
 
-class _EmailFormFieldState extends State<EmailFormField> {
+class _EmailFormFieldLogInState extends State<EmailFormFieldLogIn> {
   late Debouncer _debouncer;
   late TextEditingController _controller;
   late FocusNode _focusNode;

@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_single_quotes
+
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_instagram_clone/app/view/app.dart';
 import 'package:flutter_instagram_clone/auth/login/cubit/login_cubit.dart';
 import 'package:flutter_instagram_clone/auth/login/widgets/widgets.dart';
 import 'package:user_repository/user_repository.dart';
@@ -77,11 +80,17 @@ class LoginView extends StatelessWidget {
             )),
 
             const SignUpNewAccountButton(),
+            // ElevatedButton(
+            //     onPressed: () {
+            //       context.read<UserRepository>().logOut();
+            //     },
+            //     child: const Text("Log Out"))
+
             ElevatedButton(
-                onPressed: () {
-                  context.read<UserRepository>().logOut();
-                },
-                child: const Text("Log Out"))
+                onPressed: () => openSnackbar(
+                    clearIfQueue: true,
+                    const SnackbarMessage.success(title: "Successfully")),
+                child: const Text("Show snack bar"))
           ],
         ),
       ),

@@ -46,7 +46,6 @@ enum SignUpSubmissionStatus {
       isEmailRegistered;
 }
 
-
 class SignUpState extends Equatable {
   const SignUpState._({
     required this.submissionStatus,
@@ -98,3 +97,14 @@ class SignUpState extends Equatable {
     );
   }
 }
+
+final signupSubmissionStatusMessage =
+    <SignUpSubmissionStatus, SubmissionStatusMessage>{
+  SignUpSubmissionStatus.emailAlreadyRegistered: const SubmissionStatusMessage(
+    title: 'User with this email already exists.',
+    description: 'Try another email address.',
+  ),
+  SignUpSubmissionStatus.error: const SubmissionStatusMessage.genericError(),
+  SignUpSubmissionStatus.networkError:
+      const SubmissionStatusMessage.networkError(),
+};

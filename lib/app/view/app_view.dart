@@ -17,12 +17,13 @@ class AppView extends StatelessWidget {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         builder: (context, child) {
-          return Stack(  //bütün ekranlarda snackbar üste gelicek
+          return Stack(
+            //bütün ekranlarda snackbar üste gelicek
             children: [
+              child!,
               AppSnackbar(
                 key: snackbarKey,
               ),
-              child!,
             ],
           );
         },

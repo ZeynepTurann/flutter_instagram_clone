@@ -6,14 +6,14 @@ import 'package:flutter_instagram_clone/l10n/l10n.dart';
 import 'package:flutter_instagram_clone/auth/login/cubit/login_cubit.dart';
 import 'package:shared/shared.dart';
 
-class PasswordFormField extends StatefulWidget {
-  const PasswordFormField({super.key});
+class PasswordFormFieldLogIn extends StatefulWidget {
+  const PasswordFormFieldLogIn({super.key});
 
   @override
-  State<PasswordFormField> createState() => _PasswordFormFieldState();
+  State<PasswordFormFieldLogIn> createState() => _PasswordFormFieldLogInState();
 }
 
-class _PasswordFormFieldState extends State<PasswordFormField> {
+class _PasswordFormFieldLogInState extends State<PasswordFormFieldLogIn> {
   late Debouncer _debouncer;
   late TextEditingController _controller;
   late FocusNode _focusNode;

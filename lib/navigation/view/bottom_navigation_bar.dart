@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_single_quotes
+
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_instagram_clone/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared/shared.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key, required this.navigationShell});
@@ -20,12 +23,16 @@ class BottomNavBar extends StatelessWidget {
         userProfileAvatar: const Icon(Icons.person));
 
     return BottomNavigationBar(
-      currentIndex: navigationShell.currentIndex,
+        currentIndex: navigationShell.currentIndex,
         onTap: (index) {
-          navigationShell.goBranch(
-            index,
-            initialLocation: index == navigationShell.currentIndex,
-          );
+          if (index == 2) {
+            logI("I am create media");
+          } else {
+            navigationShell.goBranch(
+              index,
+              initialLocation: index == navigationShell.currentIndex,
+            );
+          }
         },
         iconSize: 28,
         showSelectedLabels: false,

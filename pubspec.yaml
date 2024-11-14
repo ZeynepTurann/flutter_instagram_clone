@@ -13,6 +13,8 @@ dependencies:
   app_ui:
     path: packages/app_ui
   bloc: ^8.1.4
+  database_client:
+    path: packages/database_client
   env:
     path: packages/env
 
@@ -33,10 +35,13 @@ dependencies:
   instagram_blocks_ui:
     path: packages/instagram_blocks_ui
   intl: ^0.19.0
+  posts_repository:
+    path: packages/posts_repository
   powersync_repository:
     path: packages/powersync_repository
   shared:
     path: packages/shared
+  sliver_tools: ^0.2.12
   supabase_authentication_client:
     path: packages/authentication_client/supabase_authentication_client
   token_storage:

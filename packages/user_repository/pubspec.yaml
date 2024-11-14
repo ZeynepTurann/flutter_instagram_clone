@@ -14,6 +14,8 @@ dev_dependencies:
 dependencies:
   authentication_client:
     path: ../authentication_client/authentication_client
+  database_client:
+    path: /Users/yazilimasrra/demoProject/flutter_instagram_clone/flutter_instagram_clone/packages/database_client
   powersync_repository:
     path: ../powersync_repository
   rxdart: ^0.28.0

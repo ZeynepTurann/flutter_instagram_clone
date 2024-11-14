@@ -1,4 +1,5 @@
 import 'package:authentication_client/authentication_client.dart';
+import 'package:database_client/database_client.dart';
 // import 'package:database_client/database_client.dart';
 import "package:powersync_repository/powersync_repository.dart" hide User;
 import 'package:user_repository/user_repository.dart';
@@ -7,15 +8,18 @@ import 'package:user_repository/user_repository.dart';
 /// A package that manages user flow.
 /// {@endtemplate}
 /// implements UserBaseRepository
-class UserRepository {
+class UserRepository extends UserBaseRepository {
   /// {@macro user_repository}
-  const UserRepository({
-    // required DatabaseClient databaseClient,
-    required AuthenticationClient authenticationClient,
-  }) : _authenticationClient = authenticationClient;
+  const UserRepository(
+      {
+      // required DatabaseClient databaseClient,
+      required AuthenticationClient authenticationClient,
+      required DatabaseClient databaseClient})
+      : _authenticationClient = authenticationClient,
+        _databaseClient = databaseClient;
 
-  // final DatabaseClient _databaseClient;
   final AuthenticationClient _authenticationClient;
+  final DatabaseClient _databaseClient;
 
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
@@ -160,11 +164,25 @@ class UserRepository {
     }
   }
 
-  // @override
-  // String? get currentUserId => _databaseClient.currentUserId;
+  @override
+  String? get currentUserId => _databaseClient.currentUserId;
+
+  @override
+  Stream<User> profile({required String userId}) =>
+      _databaseClient.profile(userId: userId);
+
+  @override
+  Stream<int> followersCountOf({required String userId}) {
+    return _databaseClient.followersCountOf(userId: userId);
+  }
+
+  @override
+  Stream<int> followingsCountOf({required String userId}) {
+    return _databaseClient.followingsCountOf(userId: userId);
+  }
 
   // @override
-  // Stream<User> profile({required String id}) => _databaseClient.profile(id: id);
+  // String? get currentUserId => _databaseClient.currentUserId;
 
   // @override
   // Stream<int> followersCountOf({required String userId}) =>

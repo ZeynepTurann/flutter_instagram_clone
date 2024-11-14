@@ -1,5 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_instagram_clone/app/app.dart';
 import 'package:flutter_instagram_clone/app/routes/routes.dart';
 import 'package:flutter_instagram_clone/app/view/app.dart';
 import 'package:flutter_instagram_clone/auth/view/auth_page.dart';
@@ -10,7 +12,7 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final routerconfig = router();
+    final routerconfig = router(context.read<AppBloc>());
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,

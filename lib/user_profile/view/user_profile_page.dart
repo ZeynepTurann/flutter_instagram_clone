@@ -1,15 +1,18 @@
-// ignore_for_file: unnecessary_string_interpolations, lines_longer_than_80_chars
+// ignore_for_file: unnecessary_string_interpolations, lines_longer_than_80_chars, require_trailing_commas
 
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram_clone/home/view/home_page.dart';
+import 'package:flutter_instagram_clone/l10n/l10n.dart';
 import 'package:flutter_instagram_clone/user_profile/bloc/user_profile_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:posts_repository/posts_repository.dart';
+import 'package:shared/shared.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:user_repository/user_repository.dart';
 
+import '../../app/bloc/app_bloc.dart';
 import '../widgets/user_profile_header.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -73,19 +76,33 @@ class _UserProfileViewState extends State<UserProfileView> {
                   if (!user.isAnonymous) ...[
                     UserProfileHeader(
                       userId: user.id,
-                    )
+                    ),
+                    SliverPersistentHeader(
+                        //if page is not first so there is back button on page, appBarand tabBar is pinned at top of the page
+                        pinned: !ModalRoute.of(context)!.isFirst,
+                        delegate: _UserProfileTabBarDelegate(const TabBar(
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            padding: EdgeInsets.zero,
+                            indicatorWeight: 1,
+                            tabs: [
+                              Tab(
+                                icon: Icon(Icons.grid_on),
+                                iconMargin: EdgeInsets.zero,
+                              ),
+                              Tab(
+                                icon: Icon(Icons.person_outline),
+                                iconMargin: EdgeInsets.zero,
+                              )
+                            ])))
                   ]
                 ]),
               )
             ];
           },
-          body: Column(
-            children: [
-              ElevatedButton(
-                  onPressed: () => context.push('/user'),
-                  child: const Text("Go to user profile page"))
-            ],
-          )),
+          body: const TabBarView(children: [
+            //UserPostsPage(),
+            //UserProfileMentionedPostsPage()
+          ])),
     ));
   }
 }
@@ -158,7 +175,17 @@ class UserProfileSettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tappable.faded(
-      onTap: () {},
+      onTap: () => context.showListOptionsModal(
+        options: [
+          // ModalOption(child: const LocaleModalOption()),
+          // ModalOption(child: const ThemeSelectorModalOption()),
+          ModalOption(child: const LogoutModalOption()),
+        ],
+      ).then((option) {
+        if (option == null) return;
+        void onTap() => option.onTap(context);
+        onTap.call();
+      }),
       child: Assets.icons.setting.svg(
         height: AppSize.iconSize,
         width: AppSize.iconSize,
@@ -166,6 +193,33 @@ class UserProfileSettingsButton extends StatelessWidget {
           context.adaptiveColor,
           BlendMode.srcIn,
         ),
+      ),
+    );
+  }
+}
+
+class LogoutModalOption extends StatelessWidget {
+  const LogoutModalOption({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Tappable.faded(
+      onTap: () => context.confirmAction(
+        fn: () {
+          context.pop();
+          context.read<AppBloc>().add(const AppLogoutRequested());
+        },
+        title: context.l10n.logOutText,
+        content: context.l10n.logOutConfirmationText,
+        noText: context.l10n.cancelText,
+        yesText: context.l10n.logOutText,
+      ),
+      child: ListTile(
+        title: Text(
+          context.l10n.logOutText,
+          style: context.bodyLarge?.apply(color: AppColors.red),
+        ),
+        leading: const Icon(Icons.logout, color: AppColors.red),
       ),
     );
   }
@@ -183,5 +237,51 @@ class UserProfileAddMediaButton extends StatelessWidget {
         size: AppSize.iconSize,
       ),
     );
+  }
+}
+
+//delegate for tabBar
+class _UserProfileTabBarDelegate extends SliverPersistentHeaderDelegate {
+  _UserProfileTabBarDelegate(this.tabBar);
+
+  final TabBar tabBar;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return ColoredBox(
+      color: context.theme.scaffoldBackgroundColor,
+      child: tabBar,
+    );
+  }
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height;
+
+  @override
+  bool shouldRebuild(covariant _UserProfileTabBarDelegate oldDelegate) {
+    return tabBar != oldDelegate.tabBar;
+  }
+}
+
+//tabBar views
+class UserPostsPage extends StatelessWidget {
+  const UserPostsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class UserProfileMentionedPostsPage extends StatelessWidget {
+  const UserProfileMentionedPostsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

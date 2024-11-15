@@ -19,7 +19,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
         _postsRepository = postsRepository,
         _userId = userId ?? userRepository.currentUserId ?? '',
         super(const UserProfileState.initial()) {
-          //events
+    //events
     on<UserProfileSubscriptionRequested>(_onUserProfileSubscriptionRequested);
     on<UserProfilePostsCountSubscriptionRequested>(
         _onUserProfilePostsCountSubscriptionRequested);
@@ -27,6 +27,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
         _onUserProfileFollowingsCountSubscriptionRequested);
     on<UserProfileFollowersCountSubscriptionRequested>(
         _onUserProfileFollowersCountSubscriptionRequested);
+    on<UserProfileFollowUserRequested>(_onUserProfileFollowUserRequested);
   }
 
   final String _userId;
@@ -54,23 +55,38 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     );
   }
 
-
-    Future<void> _onUserProfileFollowingsCountSubscriptionRequested(
+  Future<void> _onUserProfileFollowingsCountSubscriptionRequested(
       UserProfileFollowingsCountSubscriptionRequested event,
       Emitter<UserProfileState> emit) async {
     emit.forEach(
       _userRepository.followingsCountOf(userId: _userId),
-      onData: (followingsCount) => state.copyWith(followingsCount: followingsCount),
+      onData: (followingsCount) =>
+          state.copyWith(followingsCount: followingsCount),
     );
   }
 
-
-    Future<void> _onUserProfileFollowersCountSubscriptionRequested(
+  Future<void> _onUserProfileFollowersCountSubscriptionRequested(
       UserProfileFollowersCountSubscriptionRequested event,
       Emitter<UserProfileState> emit) async {
     emit.forEach(
       _userRepository.followersCountOf(userId: _userId),
-      onData: (followersCount) => state.copyWith(followingsCount: followersCount),
+      onData: (followersCount) =>
+          state.copyWith(followingsCount: followersCount),
     );
   }
+
+  Future<void> _onUserProfileFollowUserRequested(
+      UserProfileFollowUserRequested event,
+      Emitter<UserProfileState> emit) async {
+    try {
+      _userRepository.follow(followToId: event.userId ?? _userId);
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
+    }
+  }
+
+
+
+  Stream<bool> followingStatus({String? followerId}) =>
+      _userRepository.followingStatus(userId: _userId).asBroadcastStream();
 }

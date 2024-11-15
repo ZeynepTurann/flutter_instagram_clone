@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_instagram_clone/app/view/app_view.dart';
-import 'package:flutter_instagram_clone/home/view/home_page.dart';
 import 'package:flutter_instagram_clone/l10n/l10n.dart';
 import 'package:flutter_instagram_clone/user_profile/widgets/user_profile_button.dart';
 import 'package:go_router/go_router.dart';
@@ -76,7 +74,7 @@ class UserProfileHeader extends StatelessWidget {
                     const Flexible(child: ShowSuggestedPeopleButton()),
                   ].spacerBetween(width: AppSpacing.sm)
                 else ...[
-                  const Expanded(flex: 3, child: Text("")),
+                  const Expanded(flex: 3, child: UserProfileFollowUserButton()),
                 ],
               ],
             ),
@@ -177,6 +175,50 @@ class _ShowSuggestedPeopleButtonState extends State<ShowSuggestedPeopleButton> {
         _showPeople ? Icons.person_add_rounded : Icons.person_add_outlined,
         size: 20,
       ),
+    );
+  }
+}
+
+class UserProfileFollowUserButton extends StatelessWidget {
+  const UserProfileFollowUserButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<UserProfileBloc>();
+    final user = context.select((UserProfileBloc bloc) => bloc.state.user);
+
+    final l10n = context.l10n;
+
+    return BetterStreamBuilder<bool>(
+      stream: bloc.followingStatus(),
+      builder: (context, isFollowed) {
+        return UserProfileButton(
+          label: isFollowed ? '${l10n.followingUser} ▼' : l10n.followUser,
+          color: isFollowed
+              ? null
+              : context.customReversedAdaptiveColor(
+                  light: AppColors.lightBlue,
+                  dark: AppColors.blue,
+                ),
+          onTap: isFollowed
+              ? () async {
+                  void callback(ModalOption option) =>
+                      option.onTap.call(context);
+
+                  final option = await context.showListOptionsModal(
+                    title: user.username,
+                    options: followerModalOptions(
+                      unfollowLabel: context.l10n.cancelFollowingText,
+                      onUnfollowTap: () =>
+                          bloc.add(const UserProfileFollowUserRequested()),
+                    ),
+                  );
+                  if (option == null) return;
+                  callback.call(option);
+                }
+              : () => bloc.add(const UserProfileFollowUserRequested()),
+        );
+      },
     );
   }
 }

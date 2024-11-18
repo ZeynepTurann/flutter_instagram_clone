@@ -3,7 +3,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_instagram_clone/home/view/home_page.dart';
 import 'package:flutter_instagram_clone/l10n/l10n.dart';
 import 'package:flutter_instagram_clone/user_profile/bloc/user_profile_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +12,8 @@ import 'package:sliver_tools/sliver_tools.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../../app/bloc/app_bloc.dart';
+import '../../selector/locale/locale.dart';
+import '../../selector/theme/view/theme_selector.dart';
 import '../widgets/user_profile_header.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -78,7 +79,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                       userId: user.id,
                     ),
                     SliverPersistentHeader(
-                        //if page is not first so there is back button on page, appBarand tabBar is pinned at top of the page
+                        //if page is not first so there is back button on page, appBar and tabBar is pinned at top of the page
                         pinned: !ModalRoute.of(context)!.isFirst,
                         delegate: _UserProfileTabBarDelegate(const TabBar(
                             indicatorSize: TabBarIndicatorSize.tab,
@@ -177,8 +178,8 @@ class UserProfileSettingsButton extends StatelessWidget {
     return Tappable.faded(
       onTap: () => context.showListOptionsModal(
         options: [
-          // ModalOption(child: const LocaleModalOption()),
-          // ModalOption(child: const ThemeSelectorModalOption()),
+          ModalOption(child: const LocaleModalOption()),
+          ModalOption(child: const ThemeSelectorModalOption()),
           ModalOption(child: const LogoutModalOption()),
         ],
       ).then((option) {

@@ -4,8 +4,11 @@ import 'dart:developer';
 import 'package:app_ui/app_ui.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_instagram_clone/app/di/di.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:powersync_repository/powersync_repository.dart';
 import 'package:shared/shared.dart';
 
@@ -49,11 +52,14 @@ Future<void> bootstrap(
 
       await Firebase.initializeApp(options: options);
 
-      // HydratedBloc.storage = await HydratedStorage.build(
-      //   storageDirectory: kIsWeb
-      //       ? HydratedStorage.webStorageDirectory
-      //       : await getTemporaryDirectory(),
-      // );
+
+      // providing a solution to persist and restore the application’s state 
+      //even after restarting the app.
+      HydratedBloc.storage = await HydratedStorage.build(
+        storageDirectory: kIsWeb
+            ? HydratedStorage.webStorageDirectory
+            : await getTemporaryDirectory(),
+      );
 
       // final powerSyncRepository = PowerSyncRepository(env: appFlavor.getEnv);
       final powerSyncRepository = PowerSyncRepository(env: appFlavor.getEnv);

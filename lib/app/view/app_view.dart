@@ -6,33 +6,52 @@ import 'package:flutter_instagram_clone/app/routes/routes.dart';
 import 'package:flutter_instagram_clone/app/view/app.dart';
 import 'package:flutter_instagram_clone/auth/view/auth_page.dart';
 import 'package:flutter_instagram_clone/l10n/l10n.dart';
+import 'package:flutter_instagram_clone/selector/selector.dart';
+import 'package:shared/shared.dart';
 
 class AppView extends StatelessWidget {
   const AppView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final routerconfig = router(context.read<AppBloc>());
+    final routerConfig = router(context.read<AppBloc>());
 
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
-      theme: const AppTheme().theme,
-      darkTheme: const AppDarkTheme().theme,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      builder: (context, child) {
-        return Stack(
-          //bütün ekranlarda snackbar üste gelicek
-          children: [
-            child!,
-            AppSnackbar(
-              key: snackbarKey,
-            ),
-          ],
+    return BlocBuilder<LocaleBloc, Locale>(
+      builder: (context, locale) {
+        return BlocBuilder<ThemeModeBloc, ThemeMode>(
+          builder: (context, themeMode) {
+            return AnimatedSwitcher(
+              duration: 350.ms,
+              child: MediaQuery(
+                data: MediaQuery.of(context)
+                    .copyWith(textScaler: TextScaler.noScaling), //if you change font size on your phone,the font size on Instagram never changes.
+                child: MaterialApp.router(
+                  debugShowCheckedModeBanner: false,
+                  themeMode: themeMode,
+                  theme: const AppTheme().theme,
+                  darkTheme: const AppDarkTheme().theme,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  builder: (context, child) {
+                    return Stack(
+                      //bütün ekranlarda snackbar üste gelicek
+                      children: [
+                        child!,
+                        AppSnackbar(
+                          key: snackbarKey,
+                        ),
+                      ],
+                    );
+                  },
+                  routerConfig: routerConfig,
+                  locale: locale,
+                ),
+              ),
+            );
+          },
         );
       },
-      routerConfig: routerconfig,
     );
   }
 }

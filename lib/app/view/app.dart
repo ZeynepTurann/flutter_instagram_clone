@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram_clone/app/app.dart';
 import 'package:flutter_instagram_clone/app/view/app_view.dart';
+import 'package:flutter_instagram_clone/selector/locale/locale.dart';
+import 'package:flutter_instagram_clone/selector/selector.dart';
 import 'package:posts_repository/posts_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -33,9 +35,19 @@ class App extends StatelessWidget {
           value: postsRepository,
         ),
       ],
-      child: BlocProvider(
-        create: (context) =>
-            AppBloc(user: user, userRepository: userRepository),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                AppBloc(user: user, userRepository: userRepository),
+          ),
+          BlocProvider(
+            create: (context) => LocaleBloc(),
+          ),
+          BlocProvider(
+            create: (context) => ThemeModeBloc(),
+          ),
+        ],
         child: const AppView(),
       ),
     );

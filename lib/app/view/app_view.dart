@@ -23,8 +23,9 @@ class AppView extends StatelessWidget {
             return AnimatedSwitcher(
               duration: 350.ms,
               child: MediaQuery(
-                data: MediaQuery.of(context)
-                    .copyWith(textScaler: TextScaler.noScaling), //if you change font size on your phone,the font size on Instagram never changes.
+                data: MediaQuery.of(context).copyWith(
+                    textScaler: TextScaler
+                        .noScaling), //if you change font size on your phone,the font size on Instagram never changes.
                 child: MaterialApp.router(
                   debugShowCheckedModeBanner: false,
                   themeMode: themeMode,
@@ -41,6 +42,9 @@ class AppView extends StatelessWidget {
                         AppSnackbar(
                           key: snackbarKey,
                         ),
+                        AppLoadingIndeterminate(
+                          key: loadingIndeterminateKey,
+                        )
                       ],
                     );
                   },

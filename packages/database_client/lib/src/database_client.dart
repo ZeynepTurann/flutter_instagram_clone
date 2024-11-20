@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
-import 'package:powersync_repository/powersync_repository.dart' hide User;
+import 'package:powersync_repository/powersync_repository.dart';
+import 'package:shared/shared.dart';
 import 'package:user_repository/user_repository.dart';
 
 abstract class UserBaseRepository {
@@ -29,6 +30,12 @@ abstract class PostsBaseRepository {
   const PostsBaseRepository();
 
   Stream<int> postsAmountOf({required String userId});
+
+  Future<Post?> createPost(
+      {required String id,
+      required String userId,
+      required String caption,
+      required String media});
 }
 
 /// {@template database_client}
@@ -92,7 +99,6 @@ class PowerSyncDatabaseClient extends DatabaseClient {
     );
   }
 
-
   /// Follows to the user by provided [followToId]. [followerId] is the id
   /// of currently authenticated user.
   @override
@@ -149,7 +155,7 @@ class PowerSyncDatabaseClient extends DatabaseClient {
     );
   }
 
- @override
+  @override
   Future<void> unfollow({
     required String unfollowId,
     String? unfollowerId,
@@ -161,5 +167,42 @@ class PowerSyncDatabaseClient extends DatabaseClient {
       ''',
       [unfollowerId ?? currentUserId, unfollowId],
     );
+  }
+
+  @override
+  Future<Post?> createPost(
+      {required String id,
+      required String userId,
+      required String caption,
+      required String media}) async {
+    if (currentUserId == null) return null;
+    final result = await Future.wait([
+      _powerSyncRepository.db().execute(
+        '''
+    INSERT INTO posts(id, user_id, caption, media, created_at)
+    VALUES(?, ?, ?, ?, ?)
+    RETURNING *   
+    ''',
+        [
+          id,
+          currentUserId,
+          caption,
+          media,
+          DateTime.timestamp().toIso8601String(),
+        ],
+      ),
+      //returning *  means that this execution is going to return newly created post
+
+      _powerSyncRepository.db().get(
+        '''
+SELECT * FROM profiles WHERE id = ?
+''',
+        [currentUserId],
+      ),
+    ]);
+    if (result.isEmpty) return null;
+    final row = Map<String, dynamic>.from((result.first as ResultSet).first);  //returns post row
+    final author = User.fromJson(result.last as Row);  //returns profile row
+    return Post.fromJson(row).copyWith(author: author);  
   }
 }

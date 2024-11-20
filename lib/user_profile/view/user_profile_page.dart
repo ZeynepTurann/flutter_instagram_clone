@@ -231,8 +231,58 @@ class UserProfileAddMediaButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final user = context.select((AppBloc bloc) => bloc.state.user);
+    // final enableStory =
+    //     context.select((CreateStoriesBloc bloc) => bloc.state.isAvailable);
+
     return Tappable.faded(
-      onTap: () {},
+      onTap: () => context
+          .showListOptionsModal(
+        title: l10n.createText,
+        options: createMediaModalOptions(
+          reelLabel: l10n.reelText,
+          postLabel: l10n.postText,
+          storyLabel: l10n.storyText,
+          enableStory: true,
+          goTo: (route, {extra}) => context.pushNamed(route, extra: extra),
+          onStoryCreated: (path) {
+            // context.read<CreateStoriesBloc>().add(
+            // CreateStoriesStoryCreateRequested(
+            //   author: user,
+            //   contentType: StoryContentType.image,
+            //   filePath: path,
+            //   onError: (_, __) {
+            //     toggleLoadingIndeterminate(enable: false);
+            //     openSnackbar(
+            //       SnackbarMessage.error(
+            //         title: l10n.somethingWentWrongText,
+            //         description: l10n.failedToCreateStoryText,
+            //       ),
+            //     );
+            //   },
+            //   onLoading: toggleLoadingIndeterminate,
+            //   onStoryCreated: () {
+            //     toggleLoadingIndeterminate(enable: false);
+            //     openSnackbar(
+            //       SnackbarMessage.success(
+            //         title: l10n.successfullyCreatedStoryText,
+            //       ),
+            //       clearIfQueue: true,
+            //     );
+            //   },
+            // ),
+            // );
+            // context.pop();
+          },
+          onCreateReelTap: () {},
+        ),
+      )
+          .then((option) {
+        if (option == null) return;
+        void onTap() => option.onTap(context);
+        onTap.call();
+      }),
       child: const Icon(
         Icons.add_box_outlined,
         size: AppSize.iconSize,

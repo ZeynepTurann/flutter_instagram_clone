@@ -1,7 +1,7 @@
 import 'package:authentication_client/authentication_client.dart';
 import 'package:database_client/database_client.dart';
 // import 'package:database_client/database_client.dart';
-import "package:powersync_repository/powersync_repository.dart" hide User;
+import "package:powersync_repository/powersync_repository.dart";
 import 'package:user_repository/user_repository.dart';
 
 /// {@template user_repository}
@@ -188,14 +188,14 @@ class UserRepository extends UserBaseRepository {
         .asBroadcastStream();
   }
 
-    @override
+  @override
   Future<bool> isFollowed({
     required String userId,
     String? followerId,
   }) =>
       _databaseClient.isFollowed(followerId: followerId, userId: userId);
 
-    @override
+  @override
   Future<void> follow({
     required String followToId,
     String? followerId,
@@ -205,15 +205,12 @@ class UserRepository extends UserBaseRepository {
         followerId: followerId,
       );
 
-    @override
+  @override
   Future<void> unfollow({required String unfollowId, String? unfollowerId}) =>
       _databaseClient.unfollow(
         unfollowId: unfollowId,
         unfollowerId: unfollowerId,
       );
-
-  
- 
 
   // @override
   // String? get currentUserId => _databaseClient.currentUserId;
@@ -234,14 +231,9 @@ class UserRepository extends UserBaseRepository {
   // Future<List<User>> getFollowings({String? userId}) =>
   //     _databaseClient.getFollowings(userId: userId);
 
-
   // @override
   // Future<void> removeFollower({required String id}) =>
   //     _databaseClient.removeFollower(id: id);
-
-
-
-
 
   // @override
   // Stream<bool> followingStatus({

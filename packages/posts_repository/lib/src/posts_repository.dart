@@ -1,4 +1,5 @@
 import 'package:database_client/database_client.dart';
+import 'package:shared/src/models/post.dart';
 
 /// {@template posts_repository}
 /// A Very Good Project created by Very Good CLI.
@@ -13,5 +14,15 @@ class PostsRepository extends PostsBaseRepository {
   @override
   Stream<int> postsAmountOf({required String userId}) {
     return _databaseClient.postsAmountOf(userId: userId);
+  }
+
+  @override
+  Future<Post?> createPost(
+      {required String id,
+      required String userId,
+      required String caption,
+      required String media}) {
+    return _databaseClient.createPost(
+        id: id, userId: userId, caption: caption, media: media);
   }
 }

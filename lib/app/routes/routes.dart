@@ -10,6 +10,7 @@ import 'package:flutter_instagram_clone/app/view/app_view.dart';
 import 'package:flutter_instagram_clone/auth/view/auth_page.dart';
 import 'package:flutter_instagram_clone/home/home.dart';
 import 'package:flutter_instagram_clone/user_profile/user_profile.dart';
+import 'package:flutter_instagram_clone/user_profile/widgets/user_profile_create_post.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -118,25 +119,69 @@ GoRouter router(AppBloc appBloc) {
               ]),
               StatefulShellBranch(routes: [
                 GoRoute(
-                  path: '/user',
-                  pageBuilder: (context, state) {
-                    final user =
-                        context.select((AppBloc bloc) => bloc.state.user);
+                    path: '/user',
+                    pageBuilder: (context, state) {
+                      final user =
+                          context.select((AppBloc bloc) => bloc.state.user);
 
-                    return CustomTransitionPage(
-                      child: UserProfilePage(userId: user.id),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        return SharedAxisTransition(
-                          animation: animation,
-                          secondaryAnimation: secondaryAnimation,
-                          transitionType: SharedAxisTransitionType.horizontal,
-                          child: child,
-                        );
-                      },
-                    );
-                  },
-                )
+                      return CustomTransitionPage(
+                        child: UserProfilePage(userId: user.id),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return SharedAxisTransition(
+                            animation: animation,
+                            secondaryAnimation: secondaryAnimation,
+                            transitionType: SharedAxisTransitionType.horizontal,
+                            child: child,
+                          );
+                        },
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                          path: 'create_post',
+                          name: 'create_post',
+                          parentNavigatorKey: _rooutNavigatorKey,
+                          pageBuilder: (context, state) {
+                            return CustomTransitionPage(
+                                child: UserProfileCreatePost(),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return SharedAxisTransition(
+                                    animation: animation,
+                                    secondaryAnimation: secondaryAnimation,
+                                    transitionType:
+                                        SharedAxisTransitionType.horizontal,
+                                    child: child,
+                                  );
+                                });
+                          },
+                          routes: [
+                            GoRoute(
+                                path: 'publish_post',
+                                name: 'publish_post',
+                                parentNavigatorKey: _rooutNavigatorKey,
+                                pageBuilder: (context, state) {
+                                  final props = state.extra! as CreatePostProps;
+
+                                  return CustomTransitionPage(
+                                      key: state.pageKey,
+                                      child: CreatePostPage(props:props),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        return SharedAxisTransition(
+                                          animation: animation,
+                                          secondaryAnimation:
+                                              secondaryAnimation,
+                                          transitionType:
+                                              SharedAxisTransitionType
+                                                  .horizontal,
+                                          child: child,
+                                        );
+                                      });
+                                })
+                          ])
+                    ])
               ]),
             ])
       ],

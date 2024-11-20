@@ -13,6 +13,8 @@ import 'package:user_repository/user_repository.dart';
 ///Key to access the [AppSnackBarState] from the [BuildContext],
 final snackbarKey = GlobalKey<AppSnackbarState>();
 
+final loadingIndeterminateKey = GlobalKey<AppLoadingIndeterminateState>();
+
 class App extends StatelessWidget {
   const App(
       {super.key,
@@ -70,3 +72,8 @@ void openSnackbar(
 
 /// Closes all snack bars.
 void closeSnackbars() => snackbarKey.currentState?.closeAll();
+
+void toggleLoadingIndeterminate({bool enable = true, bool autoHide = false}) {
+  loadingIndeterminateKey.currentState
+      ?.setVisibility(visible: enable, autoHide: autoHide);
+}

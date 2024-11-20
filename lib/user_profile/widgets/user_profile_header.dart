@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_instagram_clone/app/view/app.dart';
 import 'package:flutter_instagram_clone/l10n/l10n.dart';
 import 'package:flutter_instagram_clone/user_profile/widgets/user_profile_button.dart';
 import 'package:go_router/go_router.dart';
@@ -132,15 +133,25 @@ class UserProfileStatisticsCounts extends StatelessWidget {
   }
 }
 
-class EditProfileButton extends StatelessWidget {
+class EditProfileButton extends StatefulWidget {
   const EditProfileButton({super.key});
 
   @override
+  State<EditProfileButton> createState() => _EditProfileButtonState();
+}
+
+class _EditProfileButtonState extends State<EditProfileButton> {
+  bool visible = false;
+  @override
   Widget build(BuildContext context) {
     return UserProfileButton(
-      label: context.l10n.editProfileText,
-      // onTap: () => context.pushNamed(AppRoutes.editProfile.name),
-    );
+        label: context.l10n.editProfileText,
+        onTap: () {
+          setState(() {
+            visible = !visible;
+          });
+          toggleLoadingIndeterminate(enable: visible);
+        });
   }
 }
 

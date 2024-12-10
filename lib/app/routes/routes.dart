@@ -166,7 +166,7 @@ GoRouter router(AppBloc appBloc) {
 
                                   return CustomTransitionPage(
                                       key: state.pageKey,
-                                      child: CreatePostPage(props:props),
+                                      child: CreatePostPage(props: props),
                                       transitionsBuilder: (context, animation,
                                           secondaryAnimation, child) {
                                         return SharedAxisTransition(

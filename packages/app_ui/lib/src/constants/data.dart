@@ -76,18 +76,18 @@ List<ModalOption> createMediaModalOptions({
   required void Function(String route, {Object? extra}) goTo,
   required bool enableStory,
   required VoidCallback onCreateReelTap,
-  ValueSetter<String>? onStoryCreated,  //void Func(T value)
+  ValueSetter<String>? onStoryCreated, //void Func(T value)
 }) =>
     <ModalOption>[
       ModalOption(
         name: reelLabel,
         iconData: Icons.video_collection_outlined,
-        onTap: () => onCreateReelTap,
+        onTap: onCreateReelTap,
       ),
       ModalOption(
         name: postLabel,
         iconData: Icons.outbox_outlined,
-        onTap: () => goTo('create-post'),
+        onTap: () => goTo('create_post'),
       ),
       if (enableStory)
         ModalOption(

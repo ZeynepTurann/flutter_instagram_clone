@@ -28,6 +28,12 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     on<UserProfileFollowersCountSubscriptionRequested>(
         _onUserProfileFollowersCountSubscriptionRequested);
     on<UserProfileFollowUserRequested>(_onUserProfileFollowUserRequested);
+    on<UserProfileFollowersSubscriptionRequested>(
+        _onUserProfileFollowersSubscriptionRequested);
+    on<UserProfileFetchFollowingsRequested>(
+        _onUserProfileFetchFollowingsRequested);
+    on<UserProfileRemoveFollowerRequested>(
+        _onUserProfileRemoveFollowerRequested);
   }
 
   final String _userId;
@@ -85,8 +91,34 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     }
   }
 
-
-
   Stream<bool> followingStatus({String? followerId}) =>
       _userRepository.followingStatus(userId: _userId).asBroadcastStream();
+
+  Future<void> _onUserProfileFollowersSubscriptionRequested(
+      UserProfileFollowersSubscriptionRequested event,
+      Emitter<UserProfileState> emit) async {
+    emit.forEach(
+      _userRepository.followers(userId: _userId),
+      onData: (followers) => state.copyWith(followers: followers),
+    );
+  }
+
+  Future<void> _onUserProfileFetchFollowingsRequested(
+      UserProfileFetchFollowingsRequested event,
+      Emitter<UserProfileState> emit) async {
+    try {
+      final followings = await _userRepository.getFollowings(userId: _userId);
+      emit(state.copyWith(followings: followings));
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
+    }
+  }
+
+  Future<void> _onUserProfileRemoveFollowerRequested(
+      UserProfileRemoveFollowerRequested event,
+      Emitter<UserProfileState> emit) async {
+    try {
+      await _userRepository.removeFollower(id: event.userId ?? _userId);
+    } catch (e) {}
+  }
 }

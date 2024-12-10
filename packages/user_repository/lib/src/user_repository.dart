@@ -212,6 +212,20 @@ class UserRepository extends UserBaseRepository {
         unfollowerId: unfollowerId,
       );
 
+  @override
+  Stream<List<User>> followers({required String userId}) {
+    return _databaseClient.followers(userId: userId);
+  }
+
+  @override
+  Future<List<User>> getFollowings({required String userId}) {
+    return _databaseClient.getFollowings(userId: userId);
+  }
+
+  @override
+  Future<void> removeFollower({required String id}) =>
+      _databaseClient.removeFollower(id: id);
+
   // @override
   // String? get currentUserId => _databaseClient.currentUserId;
 

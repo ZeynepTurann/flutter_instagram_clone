@@ -19,10 +19,9 @@ class PostsRepository extends PostsBaseRepository {
   @override
   Future<Post?> createPost(
       {required String id,
-      required String userId,
       required String caption,
       required String media}) {
     return _databaseClient.createPost(
-        id: id, userId: userId, caption: caption, media: media);
+        id: id, caption: caption, media: media);
   }
 }

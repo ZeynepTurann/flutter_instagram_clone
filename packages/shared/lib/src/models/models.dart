@@ -1,3 +1,5 @@
+
+export 'attachment_file.dart';
 export 'image.dart';
 export 'media.dart';
 export 'modal_option.dart';
